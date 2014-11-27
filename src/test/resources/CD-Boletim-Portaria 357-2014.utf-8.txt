@@ -1,0 +1,33 @@
+﻿PORTARIA Nº 357/2014
+Disciplina os procedimentos relativos à folha de pagamento de pessoal da Câmara dos Deputados.
+O DIRETOR-GERAL DA CÂMARA DOS DEPUTADOS, no uso de suas atribuições que lhe confere o artigo 147, inciso XV, da Resolução da Câmara dos Deputados nº 20, de 30 de novembro de 1971, RESOLVE:
+Art. 1º Esta Portaria disciplina os procedimentos relativos à folha de pagamento de pessoal da Câmara dos Deputados.
+Parágrafo único. Para fins desta Portaria, consideram-se:
+I - folha de pagamento normal: modalidade de folha mensal de pagamento de subsídios, de vencimentos, de vantagens e de proventos devidos a Deputados, servidores ativos, inativos e pensionistas da Câmara dos Deputados, destinada ainda ao processamento da retenção das consignações gerais do respectivo mês.
+II - folha de pagamento complementar: modalidade de folha de periodicidade não específica, podendo haver mais de uma por mês, de pagamento de subsídios, de vencimentos, de vantagens e de proventos devidos a Deputados, servidores ativos, inativos e pensionistas da Câmara dos Deputados, podendo, ainda, ser destinada ao pagamento de despesas extraordinárias como auxílio-moradia de Deputados e gratificação natalina anual (décimo terceiro salário).
+III - folha de pagamento avulsa: modalidade de folha de pagamento utilizada em caráter de urgência e destinada a regularizações contábeis, processada por meio de documento próprio denominado Demonstrativo Contábil Avulso de Pessoal (DCAP).
+Art. 2º A folha de pagamento de pessoal será elaborada pela Coordenação de Pagamento de Pessoal do Departamento de Pessoal, nos termos do art. 76 da Resolução nº 20, de 1971, e enviada ao Departamento de Finanças, Orçamento e Contabilidade, para os devidos registros contábeis e efetivo pagamento.
+Art. 3º A folha de pagamento, processada por sistema informatizado específico, observa o cronograma estabelecido pelo Departamento de Pessoal e pelo Departamento de Finanças, Orçamento e Contabilidade.
+Art. 4º A realização de despesas de pessoal dar-se-á preferencialmente em folha de pagamento de modalidade normal ou complementar.
+Art. 5º O pagamento de qualquer direito reconhecido e devidamente autorizado, retroativo ou não, será efetuado a partir da primeira folha de pagamento disponível para sua inclusão e, excepcionalmente, por meio de folha avulsa.
+Art. 6º Serão objetos de pagamentos ou regularizações contábeis por meio de folha avulsa os seguintes processos gerados pela Coordenação de Pagamento de Pessoal:
+I - consignações retidas na folha de pagamento que, por sua natureza ou determinação judicial, não são incluídas no respectivo arquivo de crédito de consignatárias ou de pensão alimentícia;
+II - valores líquidos retidos de servidores e não incluídos no respectivo arquivo de créditos do líquido da folha por falta de recadastramento, de apresentação anual da Declaração de Bens e Renda, de comprovação de quitação eleitoral, de informação de dados bancários, por determinação judicial ou outro fato devidamente comprovado;
+III - reprocessamento ou baixa contábil de valores da folha de pagamento devolvidos pela respectiva instituição financeira, decorrente de inconsistência bancária ou por solicitação de exclusão do arquivo de crédito correspondente, comandado pela Coordenação de Pagamento de Pessoal;
+IV - baixa contábil de valores recolhidos à Câmara dos Deputados por meio de Guia de Recolhimento da União (GRU) relativos à folha de pagamento ou contribuição previdenciária de averbação de mandato de Deputados ou outros recolhimentos relativos à despesa de pessoal; 
+V - pagamento de auxílio-funeral;
+VI - pagamento de despesas não incluídas na folha normal ou folha complementar do mês.
+Art. 7º Para efetivação de pagamento ou regularização contábil avulsa, será utilizado o DCAP, elaborado pela Coordenação de Pagamento de Pessoal e encaminhado ao Departamento de Finanças, Orçamento e Contabilidade, o qual deverá conter:
+I - número sequencial que identifique o DCAP, no formato NNN - MM/AAAA, onde NNN – indica o número sequencial; MM – indica o mês de emissão e AAAA – indica o ano de emissão;
+II - identificação do respectivo credor ou devedor (nome, ponto, CPF/CNPJ);
+III - domicílio bancário, se necessário, para fins de pagamento;
+IV - descrição das rubricas depagamento ou regularização contábil, com indicação dos documentos informados pelo Departamento de Finanças, Orçamento e Contabilidade, quando for o caso;
+V - justificativa sucinta sobre o motivo da emissão do DCAP;
+VI - data de emissão do DCAP e correspondente recibo pelo Departamento de Finanças, Orçamento e Contabilidade e
+VII - assinatura do Chefe de Serviço de Pagamento que emitiu o DCAP e do Diretor da Coordenação de Pagamento de Pessoal ou somente do Diretor da Coordenação, quando o DCAP for gerado na Diretoria da Coordenação, exigível no caso de emissão manual.
+Art. 8º Os DCAPs emitidos pela Coordenação de Pagamento de Pessoal deverão ser arquivados em pasta própria, em meio eletrônico ou em material impresso, para fins de acompanhamento e controle, após a devida conciliação com os correspondentes registros contábeis efetuados pelo Departamento de Finanças, Orçamento e Contabilidade.
+Art. 9º Os DCAPs, que dizem respeito a pagamento ou regularização contábil, deverão ser registrados na respectiva ficha financeira de Deputados, de servidores ou de pensionistas, observando-se o mês e o ano de sua emissão, com a validação de registro no mês e no ano de competência, sempre que necessário.
+Art. 10. Até que seja implementada a emissão eletrônica, por meio do Sistema de Gestão de Pessoal da Câmara dos Deputados – SIGESP-CD, a emissão do DCAP será manual.
+Art. 11 A utilização do DCAP será iniciada a partir do primeiro dia útil do mês subsequente ao da publicação desta Portaria.
+Art. 12. Esta Portaria entra em vigor na data de sua publicação.
+Em 25/11/2014 - SÉRGIO SAMPAIO CONTREIRAS DE ALMEIDA, Diretor-Geral.
