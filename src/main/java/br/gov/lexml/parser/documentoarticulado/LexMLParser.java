@@ -19,4 +19,6 @@ package br.gov.lexml.parser.documentoarticulado;
 
 public interface LexMLParser {
 	String getEpigrafe();
+
+	String getFecho();
 }

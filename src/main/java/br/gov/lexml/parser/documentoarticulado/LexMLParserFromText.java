@@ -26,6 +26,7 @@ import org.apache.commons.io.IOUtils;
 public class LexMLParserFromText implements LexMLParser {
 	private static final String IGNORE_CASE_REGEX = "(?i)";
 	String[] EPIGRAFE_REGEX_COLLECTION = { "^\\s*(lei|decreto|portaria)\\s*n[º\\.\\s]\\s*[0-9].*$" };
+	String[] FECHO_REGEX_COLLECTION = { "^\\s*Em [0-9]+/[0-9]+/[0-9]{2-4}.*$", "^\\s*[^0-9]+, [0-9]+ de [a-z]+ de [0-9]{4}.*$" };
 	private String text;
 
 	public LexMLParserFromText(String text) {
@@ -34,15 +35,15 @@ public class LexMLParserFromText implements LexMLParser {
 
 	public String getEpigrafe() {
 		for (String line : getLines(text)) {
-			if (matchesEpigrafe(line)) {
+			if (matches(line, EPIGRAFE_REGEX_COLLECTION)) {
 				return line;
 			}
 		}
 		return null;
 	}
 
-	private boolean matchesEpigrafe(String line) {
-		for (String rule : EPIGRAFE_REGEX_COLLECTION) {
+	private boolean matches(String line, String[] regex) {
+		for (String rule : regex) {
 			if (line.matches(IGNORE_CASE_REGEX + rule)) {
 				return true;
 			}
@@ -56,5 +57,15 @@ public class LexMLParserFromText implements LexMLParser {
 		} catch (IOException e) {
 			throw new IllegalArgumentException(e);
 		}
+	}
+
+	@Override
+	public String getFecho() {
+		for (String line : getLines(text)) {
+			if (matches(line, FECHO_REGEX_COLLECTION)) {
+				return line;
+			}
+		}
+		return null;
 	}
 }

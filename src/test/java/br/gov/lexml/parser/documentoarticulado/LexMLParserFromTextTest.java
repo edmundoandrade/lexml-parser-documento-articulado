@@ -25,6 +25,7 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class LexMLParserFromTextTest {
@@ -38,6 +39,17 @@ public class LexMLParserFromTextTest {
 		assertEquals("LEI Nº 13.042, DE 28 DE OUTUBRO DE 2014", parser.getEpigrafe());
 		parser = new LexMLParserFromText(sampleText("/CD-Boletim-Portaria 357-2014.utf-8.txt"));
 		assertEquals("PORTARIA Nº 357/2014", parser.getEpigrafe());
+	}
+
+	@Test
+	@Ignore
+	public void recognizeFecho() throws IOException {
+		LexMLParser parser = new LexMLParserFromText("");
+		assertNull(parser.getFecho());
+		parser = new LexMLParserFromText(sampleText("/IN-DOU-Lei 13042-2014.utf-8.txt"));
+		assertEquals("Brasília, 28 de outubro de 2014; 193º da Independência e 126º da República.", parser.getFecho());
+		parser = new LexMLParserFromText(sampleText("/CD-Boletim-Portaria 357-2014.utf-8.txt"));
+		assertEquals("Em 25/11/2014 - ", parser.getFecho());
 	}
 
 	private String sampleText(String resourceName) throws IOException {
