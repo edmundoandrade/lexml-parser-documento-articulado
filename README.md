@@ -1,7 +1,7 @@
 lexml-parser-documento-articulado
 =================================
 
-Interface simplificada para geração de documentos articulados LexML.
+Interface simplificada para geração de documentos normativos articulados no formato [LexML](http://projeto.lexml.gov.br/).
 
 O reconhecimento de artigos, incisos, parágrafos, alíneas e outros elementos presentes na articulação de documentos normativos é realizado pelo componente [lexml-parser-projeto-lei](https://github.com/lexml/lexml-parser-projeto-lei), disponibilizado pela equipe do projeto LexML em favor da comunidade [LexML Brasil](http://www.lexml.gov.br/).
 
