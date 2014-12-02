@@ -19,41 +19,59 @@ package br.gov.lexml.parser.documentoarticulado;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
+import org.junit.Before;
 import org.junit.Test;
 
 public class LexMLParserFromTextTest {
 	private static final String ENCODING = "UTF-8";
+	private LexMLParser parserEmpty;
+	private LexMLParserFromText parserLei;
+	private LexMLParserFromText parserPortaria;
 
-	@Test
-	public void recognizeEpigrafe() throws IOException {
-		LexMLParser parser = new LexMLParserFromText("");
-		assertNull(parser.getEpigrafe());
-		parser = new LexMLParserFromText(sampleText("/IN-DOU-Lei 13042-2014.utf-8.txt"));
-		assertEquals("LEI Nº 13.042, DE 28 DE OUTUBRO DE 2014", parser.getEpigrafe());
-		parser = new LexMLParserFromText(sampleText("/CD-Boletim-Portaria 357-2014.utf-8.txt"));
-		assertEquals("PORTARIA Nº 357/2014", parser.getEpigrafe());
+	@Before
+	public void setUp() {
+		parserEmpty = new LexMLParserFromText("");
+		parserLei = new LexMLParserFromText(sampleText("/IN-DOU-Lei 13042-2014.utf-8.txt"));
+		parserPortaria = new LexMLParserFromText(sampleText("/CD-Boletim-Portaria 357-2014.utf-8.txt"));
 	}
 
 	@Test
-	public void recognizeFecho() throws IOException {
-		LexMLParser parser = new LexMLParserFromText("");
-		assertNull(parser.getFecho());
-		parser = new LexMLParserFromText(sampleText("/IN-DOU-Lei 13042-2014.utf-8.txt"));
-		assertEquals("Brasília, 28 de outubro de 2014; 193º da Independência e 126º da República.", parser.getFecho());
-		parser = new LexMLParserFromText(sampleText("/CD-Boletim-Portaria 357-2014.utf-8.txt"));
-		assertEquals("Em 25/11/2014", parser.getFecho());
+	public void recognizeEpigrafe() {
+		assertNull(parserEmpty.getEpigrafe());
+		assertEquals("LEI Nº 13.042, DE 28 DE OUTUBRO DE 2014", parserLei.getEpigrafe());
+		assertEquals("PORTARIA Nº 357/2014", parserPortaria.getEpigrafe());
 	}
 
-	private String sampleText(String resourceName) throws IOException {
-		InputStream input = new BOMInputStream(getClass().getResourceAsStream(resourceName));
+	@Test
+	public void recognizeArticulacao() {
+		assertEquals(0, parserEmpty.getArtigos().size());
+		assertEquals(2, parserLei.getArtigos().size());
+		assertEquals(12, parserPortaria.getArtigos().size());
+	}
+
+	@Test
+	public void recognizeFecho() {
+		assertNull(parserEmpty.getFecho());
+		assertEquals("Brasília, 28 de outubro de 2014; 193º da Independência e 126º da República.", parserLei.getFecho());
+		assertEquals("Em 25/11/2014", parserPortaria.getFecho());
+	}
+
+	private String sampleText(String resourceName) {
 		try {
-			return IOUtils.toString(input, ENCODING);
-		} finally {
-			input.close();
+			InputStream input = new BOMInputStream(getClass().getResourceAsStream(resourceName));
+			try {
+				return IOUtils.toString(input, ENCODING);
+			} finally {
+				input.close();
+			}
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
 		}
 	}
 }

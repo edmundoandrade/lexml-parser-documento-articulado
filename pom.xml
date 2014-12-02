@@ -75,13 +75,11 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.3</version>
 		</dependency>
-		<!-- 
 		<dependency>
 			<groupId>br.gov.lexml.parser.pl</groupId>
 			<artifactId>lexml-parser-projeto-lei</artifactId>
 			<version>1.9.10</version>
 		</dependency>
-		 -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

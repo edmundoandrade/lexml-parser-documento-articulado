@@ -17,8 +17,17 @@
  */
 package br.gov.lexml.parser.documentoarticulado;
 
+import java.util.List;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 public interface LexMLParser {
 	String getEpigrafe();
 
+	Document getArticulacao();
+
 	String getFecho();
+
+	List<Element> getArtigos();
 }
