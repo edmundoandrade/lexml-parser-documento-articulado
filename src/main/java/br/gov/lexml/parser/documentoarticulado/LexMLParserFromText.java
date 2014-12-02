@@ -20,13 +20,15 @@ package br.gov.lexml.parser.documentoarticulado;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 
 public class LexMLParserFromText implements LexMLParser {
 	private static final String IGNORE_CASE_REGEX = "(?i)";
 	String[] EPIGRAFE_REGEX_COLLECTION = { "^\\s*(lei|decreto|portaria)\\s*n[º\\.\\s]\\s*[0-9].*$" };
-	String[] FECHO_REGEX_COLLECTION = { "^\\s*Em [0-9]+/[0-9]+/[0-9]{2-4}.*$", "^\\s*[^0-9]+, [0-9]+ de [a-z]+ de [0-9]{4}.*$" };
+	String[] FECHO_REGEX_COLLECTION = { "^\\s*(Em [0-9]+/[0-9]+/[0-9]{2,4}).*$", "^\\s*([^0-9]+, [0-9]+ de [a-z]+ de [0-9]{4}.*)$" };
 	private String text;
 
 	public LexMLParserFromText(String text) {
@@ -37,6 +39,16 @@ public class LexMLParserFromText implements LexMLParser {
 		for (String line : getLines(text)) {
 			if (matches(line, EPIGRAFE_REGEX_COLLECTION)) {
 				return line;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public String getFecho() {
+		for (String line : getLines(text)) {
+			if (matches(line, FECHO_REGEX_COLLECTION)) {
+				return extractMatch(line, FECHO_REGEX_COLLECTION);
 			}
 		}
 		return null;
@@ -59,11 +71,11 @@ public class LexMLParserFromText implements LexMLParser {
 		}
 	}
 
-	@Override
-	public String getFecho() {
-		for (String line : getLines(text)) {
-			if (matches(line, FECHO_REGEX_COLLECTION)) {
-				return line;
+	private String extractMatch(String line, String[] regex) {
+		for (String rule : regex) {
+			Matcher matcher = Pattern.compile(rule).matcher(line);
+			if (matcher.find()) {
+				return matcher.group(1);
 			}
 		}
 		return null;
