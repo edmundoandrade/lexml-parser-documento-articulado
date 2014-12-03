@@ -24,12 +24,8 @@ import org.w3c.dom.Element;
 
 public interface LexMLParser {
 	String getEpigrafe();
-
 	Document getArticulacao();
-
 	String getFecho();
-
 	List<Element> getArtigos();
-
-	String getAssinatura();
+	List<String> getAssinatura();
 }

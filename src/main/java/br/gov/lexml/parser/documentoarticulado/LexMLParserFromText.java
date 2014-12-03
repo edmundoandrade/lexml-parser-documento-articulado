@@ -37,7 +37,7 @@ import br.gov.lexml.parser.pl.ArticulacaoParser;
 public class LexMLParserFromText implements LexMLParser {
 	private static final String IGNORE_CASE_REGEX = "(?i)";
 	String[] EPIGRAFE_REGEX_COLLECTION = { "^\\s*(lei|decreto|portaria)\\s*n[º\\.\\s]\\s*[0-9].*$" };
-	String[] FECHO_REGEX_COLLECTION = { "^\\s*(Em [0-9]+/[0-9]+/[0-9]{2,4}).*$", "^\\s*([^0-9]+, [0-9]+ de [a-z]+ de [0-9]{4}.*)$" };
+	String[] FECHO_REGEX_COLLECTION = { "^\\s*(em [0-9]+/[0-9]+/[0-9]{2,4}).*$", "^\\s*([^0-9]+,\\s*[0-9]+ de [a-z]+ de [0-9]{4}.*)$" };
 
 	private String text;
 	private Document articulacao;
@@ -116,7 +116,7 @@ public class LexMLParserFromText implements LexMLParser {
 
 	private String extractMatch(String line, String[] regex) {
 		for (String rule : regex) {
-			Matcher matcher = Pattern.compile(rule).matcher(line);
+			Matcher matcher = Pattern.compile(IGNORE_CASE_REGEX + rule).matcher(line);
 			if (matcher.find()) {
 				return matcher.group(1);
 			}
@@ -125,20 +125,21 @@ public class LexMLParserFromText implements LexMLParser {
 	}
 
 	@Override
-	public String getAssinatura() {
-		String assinatura = null;
+	public List<String> getAssinatura() {
+		List<String> assinaturas = new ArrayList<>();
 		for (String line : getLines(text)) {
-			if(assinatura != null){
-				if(!assinatura.equals("")){
-					assinatura += "\n";
-				}
-				assinatura += line;
-			}
-			if (matches(line, FECHO_REGEX_COLLECTION)) {
-				assinatura = line.replace(extractMatch(line, FECHO_REGEX_COLLECTION), "");
-				assinatura = assinatura.replace(" - ", "");
+			if (assinaturas.size() > 0) {
+				assinaturas.add(line.trim());
+			} else if (matches(line, FECHO_REGEX_COLLECTION)) {
+				assinaturas.add(line.replace(extractMatch(line, FECHO_REGEX_COLLECTION), "").trim());
 			}
 		}
-		return assinatura;
+		for (int i = 0; i < assinaturas.size(); i++) {
+			if (assinaturas.get(i).isEmpty()) {
+				assinaturas.remove(i);
+				i--;
+			}
+		}
+		return assinaturas;
 	}
 }
