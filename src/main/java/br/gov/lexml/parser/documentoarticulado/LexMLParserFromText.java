@@ -38,6 +38,7 @@ public class LexMLParserFromText implements LexMLParser {
 	private static final String IGNORE_CASE_REGEX = "(?i)";
 	String[] EPIGRAFE_REGEX_COLLECTION = { "^\\s*(lei|decreto|portaria)\\s*n[º\\.\\s]\\s*[0-9].*$" };
 	String[] FECHO_REGEX_COLLECTION = { "^\\s*(Em [0-9]+/[0-9]+/[0-9]{2,4}).*$", "^\\s*([^0-9]+, [0-9]+ de [a-z]+ de [0-9]{4}.*)$" };
+
 	private String text;
 	private Document articulacao;
 
@@ -121,5 +122,23 @@ public class LexMLParserFromText implements LexMLParser {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public String getAssinatura() {
+		String assinatura = null;
+		for (String line : getLines(text)) {
+			if(assinatura != null){
+				if(!assinatura.equals("")){
+					assinatura += "\n";
+				}
+				assinatura += line;
+			}
+			if (matches(line, FECHO_REGEX_COLLECTION)) {
+				assinatura = line.replace(extractMatch(line, FECHO_REGEX_COLLECTION), "");
+				assinatura = assinatura.replace(" - ", "");
+			}
+		}
+		return assinatura;
 	}
 }

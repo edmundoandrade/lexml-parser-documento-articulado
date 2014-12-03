@@ -61,6 +61,13 @@ public class LexMLParserFromTextTest {
 		assertEquals("Brasília, 28 de outubro de 2014; 193º da Independência e 126º da República.", parserLei.getFecho());
 		assertEquals("Em 25/11/2014", parserPortaria.getFecho());
 	}
+	
+	@Test
+	public void recognizeAssinatura() {
+		assertNull(parserEmpty.getAssinatura());
+		assertEquals("DILMA ROUSSEFF\nPaulo Sérgio Oliveira Passos", parserLei.getAssinatura());
+		assertEquals("SÉRGIO SAMPAIO CONTREIRAS DE ALMEIDA, Diretor-Geral.", parserPortaria.getAssinatura());
+	}
 
 	private String sampleText(String resourceName) {
 		try {

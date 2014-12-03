@@ -30,4 +30,6 @@ public interface LexMLParser {
 	String getFecho();
 
 	List<Element> getArtigos();
+
+	String getAssinatura();
 }
