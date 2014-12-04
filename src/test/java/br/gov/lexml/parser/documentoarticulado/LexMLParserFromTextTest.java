@@ -27,11 +27,12 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class LexMLParserFromTextTest {
+	
 	private static final String ENCODING = "UTF-8";
+	
 	private LexMLParser parserEmpty;
 	private LexMLParser parserLei;
 	private LexMLParser parserPortaria;
@@ -62,7 +63,6 @@ public class LexMLParserFromTextTest {
 	}
 
 	@Test
-	@Ignore
 	public void recognizeFecho() {
 		assertNull(parserEmpty.getFecho());
 		assertEquals("Brasília, 28 de outubro de 2014; 193º da Independência e 126º da República.", parserLei.getFecho());
@@ -71,7 +71,6 @@ public class LexMLParserFromTextTest {
 	}
 
 	@Test
-	@Ignore
 	public void recognizeAssinatura() {
 		assertEquals(0, parserEmpty.getAssinatura().size());
 		assertContent(parserLei.getAssinatura(), "DILMA ROUSSEFF", "Paulo Sérgio Oliveira Passos");
