@@ -27,11 +27,12 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.BOMInputStream;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class LexMLParserFromTextTest {
+	
 	private static final String ENCODING = "UTF-8";
+	
 	private LexMLParser parserEmpty;
 	private LexMLParser parserLei;
 	private LexMLParser parserPortaria;
@@ -62,20 +63,18 @@ public class LexMLParserFromTextTest {
 	}
 
 	@Test
-	@Ignore
 	public void recognizeFecho() {
 		assertNull(parserEmpty.getFecho());
 		assertEquals("Brasília, 28 de outubro de 2014; 193º da Independência e 126º da República.", parserLei.getFecho());
-		assertEquals("Em 25/11/2014", parserPortaria.getFecho());
+		assertEquals("Em 25/11/2014 - ", parserPortaria.getFecho());
 		assertEquals("Brasília, em 17 de março de 1964; 143º da Independência e 76º da República.", parserLei4320.getFecho());
 	}
 
 	@Test
-	@Ignore
 	public void recognizeAssinatura() {
 		assertEquals(0, parserEmpty.getAssinatura().size());
 		assertContent(parserLei.getAssinatura(), "DILMA ROUSSEFF", "Paulo Sérgio Oliveira Passos");
-		assertContent(parserPortaria.getAssinatura(), "- SÉRGIO SAMPAIO CONTREIRAS DE ALMEIDA, Diretor-Geral.");
+		assertContent(parserPortaria.getAssinatura(), "SÉRGIO SAMPAIO CONTREIRAS DE ALMEIDA, Diretor-Geral.");
 		assertContent(parserLei4320.getAssinatura(), "JOÃO GOULART", "Abelardo Jurema", "Sylvio Borges de Souza Motta", "Jair Ribeiro", "João Augusto de Araújo Castro",
 				"Waldyr Ramos Borges", "Expedito Machado", "Oswaldo Costa Lima Filho", "Júlio Furquim Sambaquy", "Amaury Silva", "Anysio Botelho", "Wilson Fadul",
 				"Antonio Oliveira Brito", "Egydio Michaelsen");
