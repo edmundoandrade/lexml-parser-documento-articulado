@@ -35,12 +35,13 @@ import org.w3c.dom.NodeList;
 import br.gov.lexml.parser.pl.ArticulacaoParser;
 
 public class LexMLParserFromText implements LexMLParser {
-	private static final String IGNORE_CASE_REGEX = "(?i)";
+	private static final String ROTULO_ARTIGO = "Artigo";
 	private static final String UTF_8 = "UTF-8";
+	private static final String IGNORE_CASE_REGEX = "(?i)";
 	String[] EPIGRAFE_REGEX_COLLECTION = { "^\\s*(lei|decreto|portaria)\\s*n[º\\.\\s]\\s*[0-9].*$" };
-	String[] FECHO_REGEX_COLLECTION = { "^\\s*(em [0-9]+/[0-9]+/[0-9]{2,4}\\s*-\\s).*$", "^\\s*([^0-9]+,\\s*(em)?\\s*[0-9]+ de [.\\p{L}]+ de [0-9]{4}.*)$" };
+	String[] DATA_LOCAL_FECHO_REGEX_COLLECTION = { "^\\s*(em [0-9]+/[0-9]+/[0-9]{2,4}\\s*-\\s).*$", "^\\s*([^0-9]+,\\s*(em)?\\s*[0-9]+ de [.\\p{L}]+ de [0-9]{4}.*)$" };
 	private String text;
-	private Document articulacao;
+	private String articulacao;
 
 	public LexMLParserFromText(String text) {
 		this.text = text;
@@ -57,16 +58,16 @@ public class LexMLParserFromText implements LexMLParser {
 	}
 
 	@Override
-	public Document getArticulacao() {
+	public String getArticulacao() {
 		if (articulacao == null) {
-			articulacao = toDocument(new ArticulacaoParser().parseJList(getLines(text)));
+			articulacao = new ArticulacaoParser().parseJList(getLines(text));
 		}
 		return articulacao;
 	}
 
 	@Override
 	public List<Element> getArtigos() {
-		NodeList nodelist = getArticulacao().getElementsByTagName("Artigo");
+		NodeList nodelist = toDocument(getArticulacao()).getElementsByTagName(ROTULO_ARTIGO);
 		List<Element> elementslist = new ArrayList<Element>();
 		for (int i = 0; i < nodelist.getLength(); i++) {
 			elementslist.add((Element) nodelist.item(i));
@@ -75,13 +76,32 @@ public class LexMLParserFromText implements LexMLParser {
 	}
 
 	@Override
-	public String getFecho() {
+	public String getDataLocalFecho() {
 		for (String line : getLines(text)) {
-			if (matches(line, FECHO_REGEX_COLLECTION)) {
-				return extractMatch(line, FECHO_REGEX_COLLECTION);
+			if (matches(line, DATA_LOCAL_FECHO_REGEX_COLLECTION)) {
+				return extractMatch(line, DATA_LOCAL_FECHO_REGEX_COLLECTION);
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public List<String> getAssinatura() {
+		List<String> assinaturas = new ArrayList<>();
+		for (String line : getLines(text)) {
+			if (assinaturas.size() > 0) {
+				assinaturas.add(line.trim());
+			} else if (matches(line, DATA_LOCAL_FECHO_REGEX_COLLECTION)) {
+				assinaturas.add(line.replace(extractMatch(line, DATA_LOCAL_FECHO_REGEX_COLLECTION), "").trim());
+			}
+		}
+		for (int i = 0; i < assinaturas.size(); i++) {
+			if (assinaturas.get(i).isEmpty()) {
+				assinaturas.remove(i);
+				i--;
+			}
+		}
+		return assinaturas;
 	}
 
 	private Document toDocument(String xml) {
@@ -122,24 +142,5 @@ public class LexMLParserFromText implements LexMLParser {
 			}
 		}
 		return null;
-	}
-
-	@Override
-	public List<String> getAssinatura() {
-		List<String> assinaturas = new ArrayList<>();
-		for (String line : getLines(text)) {
-			if (assinaturas.size() > 0) {
-				assinaturas.add(line.trim());
-			} else if (matches(line, FECHO_REGEX_COLLECTION)) {
-				assinaturas.add(line.replace(extractMatch(line, FECHO_REGEX_COLLECTION), "").trim());
-			}
-		}
-		for (int i = 0; i < assinaturas.size(); i++) {
-			if (assinaturas.get(i).isEmpty()) {
-				assinaturas.remove(i);
-				i--;
-			}
-		}
-		return assinaturas;
 	}
 }

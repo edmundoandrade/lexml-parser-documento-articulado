@@ -15,9 +15,7 @@
 					{preambulo}
 				</Preambulo>
 			</ParteInicial>
-			<Articulacao>
-				{articulacao}
-			</Articulacao>
+			{articulacao}
 		</Norma>
 	</ProjetoNorma>
 </LexML>

@@ -14,9 +14,7 @@
 				{preambulo}
 			</Preambulo>
 		</ParteInicial>
-		<Articulacao>
-			{articulacao}
-		</Articulacao>
+		{articulacao}
 		<ParteFinal>
 			<LocalDataFecho>
 				{localDataFecho}

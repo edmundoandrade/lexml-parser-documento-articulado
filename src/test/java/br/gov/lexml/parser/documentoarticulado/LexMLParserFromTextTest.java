@@ -19,6 +19,7 @@ package br.gov.lexml.parser.documentoarticulado;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -34,9 +35,9 @@ public class LexMLParserFromTextTest {
 	@Before
 	public void setUp() {
 		parserEmpty = new LexMLParserFromText("");
-		parserLei = new LexMLParserFromText(sampleText("IN-DOU-Lei 13042-2014.utf-8.txt"));
-		parserPortaria = new LexMLParserFromText(sampleText("CD-Boletim-Portaria 357-2014.utf-8.txt"));
-		parserLei4320 = new LexMLParserFromText(sampleText("IN-DOU-Lei 4320-1964.utf-8.txt"));
+		parserLei = new LexMLParserFromText(sampleText("/input/IN-DOU-Lei 13042-2014.utf-8.txt"));
+		parserPortaria = new LexMLParserFromText(sampleText("/input/CD-Boletim-Portaria 357-2014.utf-8.txt"));
+		parserLei4320 = new LexMLParserFromText(sampleText("/input/IN-DOU-Lei 4320-1964.utf-8.txt"));
 	}
 
 	@Test
@@ -49,6 +50,13 @@ public class LexMLParserFromTextTest {
 
 	@Test
 	public void recognizeArticulacao() {
+		String articulacao = parserLei.getArticulacao();
+		assertTrue(articulacao.startsWith("<Articulacao>"));
+		assertTrue(articulacao.endsWith("</Articulacao>"));
+	}
+
+	@Test
+	public void recognizeArtigos() {
 		assertEquals(0, parserEmpty.getArtigos().size());
 		assertEquals(2, parserLei.getArtigos().size());
 		assertEquals(12, parserPortaria.getArtigos().size());
@@ -57,10 +65,10 @@ public class LexMLParserFromTextTest {
 
 	@Test
 	public void recognizeFecho() {
-		assertNull(parserEmpty.getFecho());
-		assertEquals("Brasília, 28 de outubro de 2014; 193º da Independência e 126º da República.", parserLei.getFecho());
-		assertEquals("Em 25/11/2014 - ", parserPortaria.getFecho());
-		assertEquals("Brasília, em 17 de março de 1964; 143º da Independência e 76º da República.", parserLei4320.getFecho());
+		assertNull(parserEmpty.getDataLocalFecho());
+		assertEquals("Brasília, 28 de outubro de 2014; 193º da Independência e 126º da República.", parserLei.getDataLocalFecho());
+		assertEquals("Em 25/11/2014 - ", parserPortaria.getDataLocalFecho());
+		assertEquals("Brasília, em 17 de março de 1964; 143º da Independência e 76º da República.", parserLei4320.getDataLocalFecho());
 	}
 
 	@Test
@@ -81,6 +89,6 @@ public class LexMLParserFromTextTest {
 	}
 
 	private String sampleText(String resourceName) {
-		return TestUtil.sampleText("/input/" + resourceName);
+		return TestUtil.sampleText(resourceName);
 	}
 }
