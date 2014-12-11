@@ -20,19 +20,12 @@ package br.gov.lexml.parser.documentoarticulado;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.input.BOMInputStream;
 import org.junit.Before;
 import org.junit.Test;
 
 public class LexMLParserFromTextTest {
-	
-	private static final String ENCODING = "UTF-8";
-	
 	private LexMLParser parserEmpty;
 	private LexMLParser parserLei;
 	private LexMLParser parserPortaria;
@@ -41,9 +34,9 @@ public class LexMLParserFromTextTest {
 	@Before
 	public void setUp() {
 		parserEmpty = new LexMLParserFromText("");
-		parserLei = new LexMLParserFromText(sampleText("/IN-DOU-Lei 13042-2014.utf-8.txt"));
-		parserPortaria = new LexMLParserFromText(sampleText("/CD-Boletim-Portaria 357-2014.utf-8.txt"));
-		parserLei4320 = new LexMLParserFromText(sampleText("/IN-DOU-Lei 4320-1964.utf-8.txt"));
+		parserLei = new LexMLParserFromText(sampleText("IN-DOU-Lei 13042-2014.utf-8.txt"));
+		parserPortaria = new LexMLParserFromText(sampleText("CD-Boletim-Portaria 357-2014.utf-8.txt"));
+		parserLei4320 = new LexMLParserFromText(sampleText("IN-DOU-Lei 4320-1964.utf-8.txt"));
 	}
 
 	@Test
@@ -88,15 +81,6 @@ public class LexMLParserFromTextTest {
 	}
 
 	private String sampleText(String resourceName) {
-		try {
-			InputStream input = new BOMInputStream(getClass().getResourceAsStream(resourceName));
-			try {
-				return IOUtils.toString(input, ENCODING);
-			} finally {
-				input.close();
-			}
-		} catch (IOException e) {
-			throw new IllegalArgumentException(e);
-		}
+		return TestUtil.sampleText("/input/" + resourceName);
 	}
 }

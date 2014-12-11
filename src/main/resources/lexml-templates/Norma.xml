@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LexML xmlns="http://www.lexml.gov.br/1.0" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="{schemaLocation}">
+	<Metadado>
+		<Identificacao URN="{urn}" />
+	</Metadado>
+	<Norma>
+		<ParteInicial>
+			<Epigrafe id="epigrafe">{epigrafe}
+			</Epigrafe>
+			<Ementa id="ementa">{ementa}</Ementa>
+			<Preambulo id="preambulo">
+				{preambulo}
+			</Preambulo>
+		</ParteInicial>
+		<Articulacao>
+			{articulacao}
+		</Articulacao>
+		<ParteFinal>
+			<LocalDataFecho>
+				{localDataFecho}
+			</LocalDataFecho>
+			<Assinaturas>
+				<Assinatura>
+					{lista:assinatura}
+				</Assinatura>
+			</Assinaturas>
+		</ParteFinal>
+	</Norma>
+</LexML>
