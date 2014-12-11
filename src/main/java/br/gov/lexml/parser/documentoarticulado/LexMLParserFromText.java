@@ -36,8 +36,9 @@ import br.gov.lexml.parser.pl.ArticulacaoParser;
 
 public class LexMLParserFromText implements LexMLParser {
 	private static final String IGNORE_CASE_REGEX = "(?i)";
+	private static final String UTF_8 = "UTF-8";
 	String[] EPIGRAFE_REGEX_COLLECTION = { "^\\s*(lei|decreto|portaria)\\s*n[º\\.\\s]\\s*[0-9].*$" };
-	String[] FECHO_REGEX_COLLECTION = {"^\\s*(em [0-9]+/[0-9]+/[0-9]{2,4}\\s*-\\s).*$", "^\\s*([^0-9]+,\\s*(em)?\\s*[0-9]+ de [.\\p{L}]+ de [0-9]{4}.*)$" };
+	String[] FECHO_REGEX_COLLECTION = { "^\\s*(em [0-9]+/[0-9]+/[0-9]{2,4}\\s*-\\s).*$", "^\\s*([^0-9]+,\\s*(em)?\\s*[0-9]+ de [.\\p{L}]+ de [0-9]{4}.*)$" };
 	private String text;
 	private Document articulacao;
 
@@ -85,7 +86,7 @@ public class LexMLParserFromText implements LexMLParser {
 
 	private Document toDocument(String xml) {
 		try {
-			InputStream input = IOUtils.toInputStream(xml);
+			InputStream input = IOUtils.toInputStream(xml, UTF_8);
 			try {
 				return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input);
 			} finally {
