@@ -64,7 +64,7 @@ public class LexMLParserFromTextTest {
 	}
 
 	@Test
-	public void recognizeFecho() {
+	public void recognizeDataLocalFecho() {
 		assertNull(parserEmpty.getDataLocalFecho());
 		assertEquals("Brasília, 28 de outubro de 2014; 193º da Independência e 126º da República.", parserLei.getDataLocalFecho());
 		assertEquals("Em 25/11/2014 - ", parserPortaria.getDataLocalFecho());
