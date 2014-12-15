@@ -18,14 +18,11 @@
 package br.gov.lexml.parser.documentoarticulado;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
@@ -35,9 +32,10 @@ import org.w3c.dom.NodeList;
 import br.gov.lexml.parser.pl.ArticulacaoParser;
 
 public class LexMLParserFromText implements LexMLParser {
-	private static final String ROTULO_ARTIGO = "Artigo";
-	private static final String UTF_8 = "UTF-8";
+	private static final String LABEL_ARTICULACAO = "Articulacao";
+	private static final String LABEL_ARTIGO = "Artigo";
 	private static final String IGNORE_CASE_REGEX = "(?i)";
+	private static final String TAG_PARAGRAPH = "p";
 	String[] EPIGRAFE_REGEX_COLLECTION = { "^\\s*(lei|decreto|portaria)\\s*n[º\\.\\s]\\s*[0-9].*$" };
 	String[] DATA_LOCAL_FECHO_REGEX_COLLECTION = { "^\\s*(em [0-9]+/[0-9]+/[0-9]{2,4}\\s*-\\s).*$", "^\\s*([^0-9]+,\\s*(em)?\\s*[0-9]+ de [.\\p{L}]+ de [0-9]{4}.*)$" };
 	private String text;
@@ -60,14 +58,36 @@ public class LexMLParserFromText implements LexMLParser {
 	@Override
 	public String getArticulacao() {
 		if (articulacao == null) {
-			articulacao = new ArticulacaoParser().parseJList(getLines(text));
+			articulacao = trimArticulacao(removeNotParsedParagraphs(new ArticulacaoParser().parseJList(getLines(text))));
 		}
 		return articulacao;
 	}
 
+	private String removeNotParsedParagraphs(String xml) {
+		Document doc = LexMlUtil.toDocument(xml);
+		Element root = doc.getDocumentElement();
+		NodeList nodelist = root.getChildNodes();
+		for (int i = 0; i < nodelist.getLength(); i++) {
+			if (nodelist.item(i).getNodeName().equals(TAG_PARAGRAPH)) {
+				root.removeChild(nodelist.item(i));
+				i--;
+			}
+		}
+		return LexMlUtil.xmlToString(doc).replace(getDataLocalFecho(), "").replace(getAssinatura().toString().replace(",", "").replace("[", "").replace("]", ""), "");
+	}
+
+	private String trimArticulacao(String xml) {
+		int index = xml.indexOf("<" + LABEL_ARTICULACAO + ">");
+		if (index < 0) {
+			return xml;
+		}
+		String result = xml.substring(index);
+		return result.substring(0, result.lastIndexOf("</" + LABEL_ARTICULACAO + ">") + LABEL_ARTICULACAO.length() + 3);
+	}
+
 	@Override
 	public List<Element> getArtigos() {
-		NodeList nodelist = toDocument(getArticulacao()).getElementsByTagName(ROTULO_ARTIGO);
+		NodeList nodelist = LexMlUtil.toDocument(getArticulacao()).getElementsByTagName(LABEL_ARTIGO);
 		List<Element> elementslist = new ArrayList<Element>();
 		for (int i = 0; i < nodelist.getLength(); i++) {
 			elementslist.add((Element) nodelist.item(i));
@@ -102,19 +122,6 @@ public class LexMLParserFromText implements LexMLParser {
 			}
 		}
 		return assinaturas;
-	}
-
-	private Document toDocument(String xml) {
-		try {
-			InputStream input = IOUtils.toInputStream(xml, UTF_8);
-			try {
-				return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input);
-			} finally {
-				input.close();
-			}
-		} catch (Throwable e) {
-			throw new IllegalArgumentException(e);
-		}
 	}
 
 	private boolean matches(String line, String[] regex) {

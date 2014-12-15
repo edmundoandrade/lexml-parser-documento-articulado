@@ -18,15 +18,13 @@
 package br.gov.lexml.parser.documentoarticulado;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class LexMLRendererTest {
-	@Ignore
 	@Test
 	public void render() {
 		LexMLRenderer renderer = new LexMLRenderer(new LexMLParserFromText(sampleText("/input/IN-DOU-Lei 13042-2014.utf-8.txt")));
-		Assert.assertEquals(sampleText("/output/Lei 13042-2014.lexml.xml"), renderer.render("http://www.lexml.gov.br/1.0 http://projeto.lexml.gov.br/esquemas/lexml-br-rigido.xsd"));
+		Assert.assertEquals(LexMlUtil.formatLexMl(sampleText("/output/Lei 13042-2014.lexml.xml")), renderer.render("http://www.lexml.gov.br/1.0 http://projeto.lexml.gov.br/esquemas/lexml-br-rigido.xsd"));
 	}
 
 	private String sampleText(String resourceName) {
