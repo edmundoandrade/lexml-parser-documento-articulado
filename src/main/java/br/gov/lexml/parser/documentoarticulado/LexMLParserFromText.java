@@ -64,6 +64,7 @@ public class LexMLParserFromText implements LexMLParser {
 	}
 
 	private String removeNotParsedParagraphs(String xml) {
+		String retorno = null;
 		Document doc = LexMlUtil.toDocument(xml);
 		Element root = doc.getDocumentElement();
 		NodeList nodelist = root.getChildNodes();
@@ -73,7 +74,12 @@ public class LexMLParserFromText implements LexMLParser {
 				i--;
 			}
 		}
-		return LexMlUtil.xmlToString(doc).replace(getDataLocalFecho(), "").replace(getAssinatura().toString().replace(",", "").replace("[", "").replace("]", ""), "");
+		if (getDataLocalFecho() == null) {
+			retorno = LexMlUtil.xmlToString(doc);
+		} else {
+			retorno = LexMlUtil.xmlToString(doc).replace(getDataLocalFecho(), "").replace(getAssinatura().toString().replace(",", "").replace("[", "").replace("]", ""), "");
+		}
+		return retorno;
 	}
 
 	private String trimArticulacao(String xml) {
