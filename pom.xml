@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Parser LexML para geração de documentos articulados</name>
 	<description>Interface simplificada para geração de documentos articulados LexML.</description>
-	<url>https://github.com/camara-deputados/lexml-documento-articulado</url>
+	<url>https://github.com/camaradosdeputadosoficial/lexml-documento-articulado</url>
 	<licenses>
 		<license>
 			<name>GNU General Public License, Version 3</name>
@@ -31,9 +31,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:git:git@github.com/camara-deputados/lexml-documento-articulado.git</connection>
-		<developerConnection>scm:git:git@github.com/camara-deputados/lexml-documento-articulado.git</developerConnection>
-		<url>git@github.com/camara-deputados/lexml-documento-articulado.git</url>
+		<connection>scm:git:git@github.com/camaradosdeputadosoficial/lexml-documento-articulado.git</connection>
+		<developerConnection>scm:git:git@github.com/camaradosdeputadosoficial/lexml-documento-articulado.git</developerConnection>
+		<url>git@github.com/camaradosdeputadosoficial/lexml-documento-articulado.git</url>
 	</scm>
 	<build>
 		<plugins>
