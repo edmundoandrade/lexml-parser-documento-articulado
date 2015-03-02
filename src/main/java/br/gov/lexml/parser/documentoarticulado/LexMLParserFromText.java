@@ -57,9 +57,8 @@ public class LexMLParserFromText implements LexMLParser {
 
 	@Override
 	public String getArticulacao() {
-		if (articulacao == null) {
+		if (articulacao == null)
 			articulacao = trimArticulacao(removeNotParsedParagraphs(new ArticulacaoParser().parseJList(getLines(text))));
-		}
 		return articulacao;
 	}
 

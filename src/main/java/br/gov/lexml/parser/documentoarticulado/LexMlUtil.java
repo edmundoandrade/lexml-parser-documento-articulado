@@ -46,7 +46,7 @@ public class LexMlUtil {
 		try {
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, ENCODING);
 			transformer.transform(new DOMSource(doc), new StreamResult(sw));
@@ -60,7 +60,9 @@ public class LexMlUtil {
 		try {
 			InputStream input = IOUtils.toInputStream(xml, ENCODING);
 			try {
-				return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input);
+				Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input);
+				doc.getDocumentElement().setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
+				return doc;
 			} finally {
 				input.close();
 			}
