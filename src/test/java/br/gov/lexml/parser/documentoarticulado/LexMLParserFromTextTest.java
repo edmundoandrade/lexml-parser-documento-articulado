@@ -52,9 +52,9 @@ public class LexMLParserFromTextTest {
 	@Test
 	public void recognizeArticulacao() {
 		String articulacao = parserLei.getArticulacao();
-		assertTrue(articulacao.startsWith("<Articulacao>"));
-		assertFalse(articulacao.startsWith("<Articulacao><p>"));
-		assertTrue(articulacao.endsWith("</Articulacao>"));
+		assertTrue(articulacao.startsWith("<Articulacao xmlns:xlink=\"http://www.w3.org/1999/xlink\">"));
+		assertFalse(articulacao.startsWith("<Articulacao xmlns:xlink=\"http://www.w3.org/1999/xlink\"><p>"));
+		assertTrue(articulacao.replaceAll("[\r\n]", "").endsWith("</Articulacao>"));
 	}
 
 	@Test

@@ -64,7 +64,7 @@ public class LexMLParserFromText implements LexMLParser {
 
 	private String removeNotParsedParagraphs(String xml) {
 		String retorno = null;
-		Document doc = LexMlUtil.toDocument(xml);
+		Document doc = LexMLUtil.toDocument(xml);
 		Element root = doc.getDocumentElement();
 		NodeList nodelist = root.getChildNodes();
 		for (int i = 0; i < nodelist.getLength(); i++) {
@@ -74,9 +74,9 @@ public class LexMLParserFromText implements LexMLParser {
 			}
 		}
 		if (getDataLocalFecho() == null) {
-			retorno = LexMlUtil.xmlToString(doc);
+			retorno = LexMLUtil.xmlToString(doc);
 		} else {
-			retorno = LexMlUtil.xmlToString(doc).replace(getDataLocalFecho(), "").replace(getAssinatura().toString().replace(",", "").replace("[", "").replace("]", ""), "");
+			retorno = LexMLUtil.xmlToString(doc).replace(getDataLocalFecho(), "").replace(getAssinatura().toString().replace(",", "").replace("[", "").replace("]", ""), "");
 		}
 		return retorno;
 	}
@@ -92,7 +92,7 @@ public class LexMLParserFromText implements LexMLParser {
 
 	@Override
 	public List<Element> getArtigos() {
-		NodeList nodelist = LexMlUtil.toDocument(getArticulacao()).getElementsByTagName(LABEL_ARTIGO);
+		NodeList nodelist = LexMLUtil.toDocument(getArticulacao()).getElementsByTagName(LABEL_ARTIGO);
 		List<Element> elementslist = new ArrayList<Element>();
 		for (int i = 0; i < nodelist.getLength(); i++) {
 			elementslist.add((Element) nodelist.item(i));

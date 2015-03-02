@@ -57,6 +57,6 @@ public class LexMLRenderer {
 		} catch (IOException e) {
 			throw new IllegalArgumentException(e);
 		}
-		return LexMlUtil.formatLexMl(lexmlManipulation);
+		return LexMLUtil.formatLexML(lexmlManipulation);
 	}
 }

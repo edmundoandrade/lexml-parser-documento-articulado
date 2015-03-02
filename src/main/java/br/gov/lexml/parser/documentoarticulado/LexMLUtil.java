@@ -38,7 +38,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-public class LexMlUtil {
+public class LexMLUtil {
 	private static final String ENCODING = "UTF-8";
 
 	public static String xmlToString(Document doc) {
@@ -46,7 +46,7 @@ public class LexMlUtil {
 		try {
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, ENCODING);
 			transformer.transform(new DOMSource(doc), new StreamResult(sw));
@@ -71,7 +71,7 @@ public class LexMlUtil {
 		}
 	}
 
-	public static String formatLexMl(String xml) {
+	public static String formatLexML(String xml) {
 		String retorno = null;
 		try {
 			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new ByteArrayInputStream(xml.getBytes("utf-8"))));
