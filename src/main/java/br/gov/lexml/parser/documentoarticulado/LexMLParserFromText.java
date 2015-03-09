@@ -102,6 +102,11 @@ public class LexMLParserFromText implements LexMLParser {
 
 	@Override
 	public String getDataLocalFecho() {
+		Matcher matcher = Pattern.compile("DOU*[^0-9]*\\d\\d\\.[\\d|\\d\\d]\\.\\d\\d\\d\\d").matcher(text);
+		if (matcher.find()) {
+			return matcher.group().replaceAll("[A-Z]", "").replaceAll("\\s", "");
+		}
+
 		for (String line : getLines(text)) {
 			if (matches(line, DATA_LOCAL_FECHO_REGEX_COLLECTION)) {
 				return extractMatch(line, DATA_LOCAL_FECHO_REGEX_COLLECTION);

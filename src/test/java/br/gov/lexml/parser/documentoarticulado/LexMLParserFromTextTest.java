@@ -32,6 +32,7 @@ public class LexMLParserFromTextTest {
 	private LexMLParser parserLei;
 	private LexMLParser parserPortaria;
 	private LexMLParser parserLei4320;
+	private LexMLParser parserEmenda852015;
 
 	@Before
 	public void setUp() {
@@ -39,6 +40,7 @@ public class LexMLParserFromTextTest {
 		parserLei = new LexMLParserFromText(sampleText("/input/IN-DOU-Lei 13042-2014.utf-8.txt"));
 		parserPortaria = new LexMLParserFromText(sampleText("/input/CD-Boletim-Portaria 357-2014.utf-8.txt"));
 		parserLei4320 = new LexMLParserFromText(sampleText("/input/IN-DOU-Lei 4320-1964.utf-8.txt"));
+		parserEmenda852015 = new LexMLParserFromText(sampleText("/input/EMENDA-CONSTITUCIONAL-Nº 85-2015.utf-8.txt"));
 	}
 
 	@Test
@@ -71,6 +73,7 @@ public class LexMLParserFromTextTest {
 		assertEquals("Brasília, 28 de outubro de 2014; 193º da Independência e 126º da República.", parserLei.getDataLocalFecho());
 		assertEquals("Em 25/11/2014 - ", parserPortaria.getDataLocalFecho());
 		assertEquals("Brasília, em 17 de março de 1964; 143º da Independência e 76º da República.", parserLei4320.getDataLocalFecho());
+		assertEquals("27.2.2015", parserEmenda852015.getDataLocalFecho());
 	}
 
 	@Test
