@@ -74,6 +74,7 @@ public class LexMLParserFromTextTest {
 		assertEquals("Em 25/11/2014 - ", parserPortaria.getDataLocalFecho());
 		assertEquals("Brasília, em 17 de março de 1964; 143º da Independência e 76º da República.", parserLei4320.getDataLocalFecho());
 		assertEquals("27.2.2015", parserEmenda852015.getDataLocalFecho());
+		assertEquals("27.2.2015", new LexMLParserFromText("Este texto não substitui o publicado no D.O.U. 27.2.2015").getDataLocalFecho());
 	}
 
 	@Test

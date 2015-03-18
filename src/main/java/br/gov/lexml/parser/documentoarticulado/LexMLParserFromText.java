@@ -19,7 +19,11 @@ package br.gov.lexml.parser.documentoarticulado;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -102,17 +106,36 @@ public class LexMLParserFromText implements LexMLParser {
 
 	@Override
 	public String getDataLocalFecho() {
-		Matcher matcher = Pattern.compile("DOU*[^0-9]*\\d\\d\\.[\\d|\\d\\d]\\.\\d\\d\\d\\d").matcher(text);
+		Matcher matcher = Pattern.compile("(D\\.O\\.U\\.|DOU)[^0-9]*((\\d|\\d\\d)\\.(\\d|\\d\\d)\\.\\d\\d\\d\\d)").matcher(text);
 		if (matcher.find()) {
-			return matcher.group().replaceAll("[A-Z]", "").replaceAll("\\s", "");
+			String extenso = extractMatch(text, new String[] { "entra em vigor no prazo de (.*) dias" });
+			if (extenso != null) {
+				String dataPublicacao = matcher.group(2).replaceAll("[A-Z]", "").replaceAll("\\s", "");
+				int dias = convertExtforInt(extenso);
+				String[] datesplit = dataPublicacao.split("\\.");
+				Calendar d = new GregorianCalendar(Integer.parseInt(datesplit[2]), Integer.parseInt(datesplit[1]) - 1, Integer.parseInt(datesplit[0]));
+				d.add(Calendar.DAY_OF_MONTH, dias);
+				return new SimpleDateFormat("dd.MM.yyyy").format(d.getTime());
+			}
+			return matcher.group(2).replaceAll("[A-Z]", "").replaceAll("\\s", "");
 		}
-
 		for (String line : getLines(text)) {
 			if (matches(line, DATA_LOCAL_FECHO_REGEX_COLLECTION)) {
 				return extractMatch(line, DATA_LOCAL_FECHO_REGEX_COLLECTION);
 			}
 		}
 		return null;
+	}
+
+	private int convertExtforInt(String numero) {
+		HashMap<String, Integer> mapNumero = new HashMap<String, Integer>();
+		mapNumero.put("quinze", 15);
+		mapNumero.put("trinta", 30);
+		mapNumero.put("quarenta e cinco", 45);
+		mapNumero.put("sessenta", 60);
+		mapNumero.put("noventa", 90);
+		mapNumero.put("cento e vinte", 120);
+		return mapNumero.get(numero.trim().toLowerCase());
 	}
 
 	@Override
