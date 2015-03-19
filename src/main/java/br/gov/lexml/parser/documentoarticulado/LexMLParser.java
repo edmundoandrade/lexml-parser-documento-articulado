@@ -35,4 +35,6 @@ public interface LexMLParser {
 	List<Element> getArtigos();
 
 	List<String> getAssinatura();
+
+	String getDataVigor();
 }

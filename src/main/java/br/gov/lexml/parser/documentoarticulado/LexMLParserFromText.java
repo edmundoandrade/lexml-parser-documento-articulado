@@ -17,7 +17,6 @@
  */
 package br.gov.lexml.parser.documentoarticulado;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -107,19 +106,6 @@ public class LexMLParserFromText implements LexMLParser {
 
 	@Override
 	public String getDataLocalFecho() {
-		Matcher matcher = Pattern.compile("(D\\.O\\.U\\.|DOU)[^0-9]*((\\d|\\d\\d)\\.(\\d|\\d\\d)\\.\\d\\d\\d\\d)").matcher(text);
-		if (matcher.find()) {
-			String extenso = extractMatch(text, new String[] { "entra em vigor no prazo de (.*) dias" });
-			if (extenso != null) {
-				String dataPublicacao = matcher.group(2).replaceAll("[A-Z]", "").replaceAll("\\s", "");
-				int dias = convertExtforInt(extenso);
-				String[] datesplit = dataPublicacao.split("\\.");
-				Calendar d = new GregorianCalendar(Integer.parseInt(datesplit[2]), Integer.parseInt(datesplit[1]) - 1, Integer.parseInt(datesplit[0]));
-				d.add(Calendar.DAY_OF_MONTH, dias);
-				return new SimpleDateFormat("dd.MM.yyyy").format(d.getTime());
-			}
-			return matcher.group(2).replaceAll("[A-Z]", "").replaceAll("\\s", "");
-		}
 		for (String line : getLines(text))
 			if (matches(line, DATA_LOCAL_FECHO_REGEX_COLLECTION))
 				return extractMatch(line, DATA_LOCAL_FECHO_REGEX_COLLECTION);
@@ -127,8 +113,39 @@ public class LexMLParserFromText implements LexMLParser {
 	}
 
 	@Override
+	public String getDataVigor() {
+		String dataVigor = extractMatch(text, new String[] { ".*[.\\p{L}]+.vigor.*([0-9]{2} de .\\p{L}+ de [0-9]{4})" });
+		if (dataVigor != null)
+			try {
+				return new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("dd 'de' MMMM 'de' yyyy").parse(dataVigor));
+			} catch (Exception e) {
+				throw new IllegalArgumentException(e);
+			}
+
+		Matcher matcher = Pattern.compile("(D\\.O\\.U\\.|DOU)[^0-9]*((\\d|\\d\\d)\\.(\\d|\\d\\d)\\.\\d\\d\\d\\d)").matcher(text);
+		if (matcher.find()) {
+			String extenso = extractMatch(text, new String[] { "entra em vigor no prazo de (.*) dias" });
+			if (extenso != null) {
+				String dataPublicacao = cleanDate(matcher.group(2));
+				int dias = convertExtforInt(extenso);
+				String[] datesplit = dataPublicacao.split("\\.");
+				Calendar d = new GregorianCalendar(Integer.parseInt(datesplit[2]), Integer.parseInt(datesplit[1]) - 1, Integer.parseInt(datesplit[0]));
+				d.add(Calendar.DAY_OF_MONTH, dias);
+				return new SimpleDateFormat("dd/MM/yyyy").format(d.getTime());
+			}
+			String[] slplit = cleanDate(matcher.group(2)).split("\\.");
+			return slplit[0] + "/" + String.format("%02d", Integer.parseInt(slplit[1])) + "/" + slplit[2];
+		}
+		return null;
+	}
+
+	private String cleanDate(String date) {
+		return date.replaceAll("[A-Z]", "").replaceAll("\\s", "");
+	}
+
+	@Override
 	public String getDataAssinatura() {
-		String dataAssinatura = extractMatch(getDataLocalFecho(), new String[] { ".*\\s*Brasília,\\s(.*[0-9]{2}\\.*.[0-9])+" });
+		String dataAssinatura = extractMatch(text, new String[] { ".*\\s*Brasília,\\s(.*[0-9]{2}\\.*.[0-9])+" });
 		if (dataAssinatura != null) {
 			try {
 				return new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("dd MMM yyyy").parse(dataAssinatura.replace("de ", "").replace("em ", "").trim()));
@@ -141,7 +158,7 @@ public class LexMLParserFromText implements LexMLParser {
 
 	@Override
 	public String getDataPublicacao() {
-		String dataPublicacao = extractMatch(getDataLocalFecho(), new String[] { "((\\d|\\d\\d).(\\d|\\d\\d)\\.\\d\\d\\d\\d)" });
+		String dataPublicacao = extractMatch(text, new String[] { "((\\d|\\d\\d).(\\d|\\d\\d)\\.\\d\\d\\d\\d)" });
 		if (dataPublicacao != null) {
 			try {
 				return new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("dd'.'M'.'yyyy").parse(dataPublicacao));
