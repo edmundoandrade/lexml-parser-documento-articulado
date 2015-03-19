@@ -28,6 +28,10 @@ public interface LexMLParser {
 
 	String getDataLocalFecho();
 
+	String getDataAssinatura();
+
+	String getDataPublicacao();
+
 	List<Element> getArtigos();
 
 	List<String> getAssinatura();

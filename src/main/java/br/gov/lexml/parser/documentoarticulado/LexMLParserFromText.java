@@ -19,6 +19,7 @@ package br.gov.lexml.parser.documentoarticulado;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -119,9 +120,33 @@ public class LexMLParserFromText implements LexMLParser {
 			}
 			return matcher.group(2).replaceAll("[A-Z]", "").replaceAll("\\s", "");
 		}
-		for (String line : getLines(text)) {
-			if (matches(line, DATA_LOCAL_FECHO_REGEX_COLLECTION)) {
+		for (String line : getLines(text))
+			if (matches(line, DATA_LOCAL_FECHO_REGEX_COLLECTION))
 				return extractMatch(line, DATA_LOCAL_FECHO_REGEX_COLLECTION);
+		return null;
+	}
+
+	@Override
+	public String getDataAssinatura() {
+		String dataAssinatura = extractMatch(getDataLocalFecho(), new String[] { ".*\\s*Brasília,\\s(.*[0-9]{2}\\.*.[0-9])+" });
+		if (dataAssinatura != null) {
+			try {
+				return new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("dd MMM yyyy").parse(dataAssinatura.replace("de ", "").replace("em ", "").trim()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public String getDataPublicacao() {
+		String dataPublicacao = extractMatch(getDataLocalFecho(), new String[] { "((\\d|\\d\\d).(\\d|\\d\\d)\\.\\d\\d\\d\\d)" });
+		if (dataPublicacao != null) {
+			try {
+				return new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("dd'.'M'.'yyyy").parse(dataPublicacao));
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
@@ -169,7 +194,7 @@ public class LexMLParserFromText implements LexMLParser {
 	private List<String> getLines(String text) {
 		try {
 			return IOUtils.readLines(new StringReader(text));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
