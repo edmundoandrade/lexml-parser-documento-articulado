@@ -134,7 +134,7 @@ public class LexMLParserFromText implements LexMLParser {
 				return new SimpleDateFormat("dd/MM/yyyy").format(d.getTime());
 			}
 			String[] slplit = cleanDate(matcher.group(2)).split("\\.");
-			return slplit[0] + "/" + String.format("%02d", Integer.parseInt(slplit[1])) + "/" + slplit[2];
+			return String.format("%02d", Integer.parseInt(slplit[0])) + "/" + String.format("%02d", Integer.parseInt(slplit[1])) + "/" + slplit[2];
 		}
 		return null;
 	}

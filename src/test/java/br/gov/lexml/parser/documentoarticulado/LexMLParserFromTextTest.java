@@ -36,11 +36,13 @@ public class LexMLParserFromTextTest {
 
 	@Before
 	public void setUp() {
+		
 		parserEmpty = new LexMLParserFromText("");
 		parserLei = new LexMLParserFromText(sampleText("/input/IN-DOU-Lei 13042-2014.utf-8.txt"));
 		parserPortaria = new LexMLParserFromText(sampleText("/input/CD-Boletim-Portaria 357-2014.utf-8.txt"));
 		parserLei4320 = new LexMLParserFromText(sampleText("/input/IN-DOU-Lei 4320-1964.utf-8.txt"));
 		parserEmenda852015 = new LexMLParserFromText(sampleText("/input/EMENDA-CONSTITUCIONAL-Nº 85-2015.utf-8.txt"));
+		
 	}
 
 	@Test
