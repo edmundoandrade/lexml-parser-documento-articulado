@@ -44,7 +44,7 @@ public class LexMLParserFromText implements LexMLParser {
 	private static final String LABEL_ARTIGO = "Artigo";
 	private static final String IGNORE_CASE_REGEX = "(?i)";
 	private static final String TAG_PARAGRAPH = "p";
-	private static final String XPATH_1ST_LEVEL_ARTIGOS = "/Articulacao/" + LABEL_ARTIGO;
+	private static final String XPATH_1ST_LEVEL_ARTIGOS = "//" + LABEL_ARTIGO + "[not(@abreAspas)]";
 	String[] EPIGRAFE_REGEX_COLLECTION = { "^\\s*(lei|decreto|portaria)\\s*n[º\\.\\s]\\s*[0-9].*$" };
 	String[] DATA_LOCAL_FECHO_REGEX_COLLECTION = { "^\\s*(em [0-9]+/[0-9]+/[0-9]{2,4}\\s*-\\s).*$", "^\\s*([^0-9]+,\\s*(em)?\\s*[0-9]+ de [.\\p{L}]+ de [0-9]{4}.*)$" };
 	private String text;
@@ -99,6 +99,7 @@ public class LexMLParserFromText implements LexMLParser {
 	@Override
 	public List<Element> getArtigos() {
 		try {
+			System.out.println(getArticulacao());
 			NodeList nodelist = (NodeList) XPathFactory.newInstance().newXPath().compile(XPATH_1ST_LEVEL_ARTIGOS)
 					.evaluate(LexMLUtil.toDocument(getArticulacao()), XPathConstants.NODESET);
 			List<Element> elementslist = new ArrayList<Element>();
@@ -127,7 +128,6 @@ public class LexMLParserFromText implements LexMLParser {
 			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			}
-
 		Matcher matcher = Pattern.compile("(D\\.O\\.U\\.|DOU)[^0-9]*((\\d|\\d\\d)\\.(\\d|\\d\\d)\\.\\d\\d\\d\\d)").matcher(text);
 		if (matcher.find()) {
 			String extenso = extractMatch(text, new String[] { "entra em vigor no prazo de (.*) dias" });
