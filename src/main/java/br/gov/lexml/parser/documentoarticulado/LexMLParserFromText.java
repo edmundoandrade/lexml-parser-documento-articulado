@@ -41,10 +41,9 @@ import br.gov.lexml.parser.pl.ArticulacaoParser;
 
 public class LexMLParserFromText implements LexMLParser {
 	private static final String LABEL_ARTICULACAO = "Articulacao";
-	private static final String LABEL_ARTIGO = "Artigo";
 	private static final String IGNORE_CASE_REGEX = "(?i)";
 	private static final String TAG_PARAGRAPH = "p";
-	private static final String XPATH_1ST_LEVEL_ARTIGOS = "//" + LABEL_ARTIGO + "[not(@abreAspas)]";
+	private static final String XPATH_1ST_LEVEL_ARTIGOS = "/*[not(self::Alteracao)]/Artigo";
 	String[] EPIGRAFE_REGEX_COLLECTION = { "^\\s*(lei|decreto|portaria)\\s*n[º\\.\\s]\\s*[0-9].*$" };
 	String[] DATA_LOCAL_FECHO_REGEX_COLLECTION = { "^\\s*(em [0-9]+/[0-9]+/[0-9]{2,4}\\s*-\\s).*$", "^\\s*([^0-9]+,\\s*(em)?\\s*[0-9]+ de [.\\p{L}]+ de [0-9]{4}.*)$" };
 	private String text;
@@ -56,11 +55,9 @@ public class LexMLParserFromText implements LexMLParser {
 
 	@Override
 	public String getEpigrafe() {
-		for (String line : getLines(text)) {
-			if (matches(line, EPIGRAFE_REGEX_COLLECTION)) {
+		for (String line : getLines(text))
+			if (matches(line, EPIGRAFE_REGEX_COLLECTION))
 				return line;
-			}
-		}
 		return null;
 	}
 
@@ -99,7 +96,7 @@ public class LexMLParserFromText implements LexMLParser {
 	@Override
 	public List<Element> getArtigos() {
 		try {
-			System.out.println(getArticulacao());
+			// System.out.println(getArticulacao());
 			NodeList nodelist = (NodeList) XPathFactory.newInstance().newXPath().compile(XPATH_1ST_LEVEL_ARTIGOS)
 					.evaluate(LexMLUtil.toDocument(getArticulacao()), XPathConstants.NODESET);
 			List<Element> elementslist = new ArrayList<Element>();
