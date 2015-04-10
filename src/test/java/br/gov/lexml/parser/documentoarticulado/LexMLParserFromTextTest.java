@@ -63,7 +63,6 @@ public class LexMLParserFromTextTest {
 	}
 
 	@Test
-	@Ignore
 	public void recognizeArtigos() {
 		assertEquals(0, parserEmpty.getArtigos().size());
 		assertEquals(2, parserLei.getArtigos().size());

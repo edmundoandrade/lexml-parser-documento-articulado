@@ -35,6 +35,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import br.gov.lexml.parser.pl.ArticulacaoParser;
@@ -43,7 +44,7 @@ public class LexMLParserFromText implements LexMLParser {
 	private static final String LABEL_ARTICULACAO = "Articulacao";
 	private static final String IGNORE_CASE_REGEX = "(?i)";
 	private static final String TAG_PARAGRAPH = "p";
-	private static final String XPATH_1ST_LEVEL_ARTIGOS = "/*[not(self::Alteracao)]/Artigo";
+	private static final String XPATH_1ST_LEVEL_ARTIGOS = "//Artigo";
 	String[] EPIGRAFE_REGEX_COLLECTION = { "^\\s*(lei|decreto|portaria)\\s*n[º\\.\\s]\\s*[0-9].*$" };
 	String[] DATA_LOCAL_FECHO_REGEX_COLLECTION = { "^\\s*(em [0-9]+/[0-9]+/[0-9]{2,4}\\s*-\\s).*$", "^\\s*([^0-9]+,\\s*(em)?\\s*[0-9]+ de [.\\p{L}]+ de [0-9]{4}.*)$" };
 	private String text;
@@ -96,16 +97,24 @@ public class LexMLParserFromText implements LexMLParser {
 	@Override
 	public List<Element> getArtigos() {
 		try {
-			// System.out.println(getArticulacao());
 			NodeList nodelist = (NodeList) XPathFactory.newInstance().newXPath().compile(XPATH_1ST_LEVEL_ARTIGOS)
 					.evaluate(LexMLUtil.toDocument(getArticulacao()), XPathConstants.NODESET);
 			List<Element> elementslist = new ArrayList<Element>();
 			for (int i = 0; i < nodelist.getLength(); i++)
-				elementslist.add((Element) nodelist.item(i));
+				if (!isAlteracao(nodelist.item(i)))
+					elementslist.add((Element) nodelist.item(i));
 			return elementslist;
 		} catch (XPathExpressionException e) {
 			throw new IllegalArgumentException(e);
 		}
+	}
+
+	private boolean isAlteracao(Node item) {
+		if (item == null)
+			return false;
+		if (item.getNodeName().equals("Alteracao"))
+			return true;
+		return isAlteracao(item.getParentNode());
 	}
 
 	@Override
