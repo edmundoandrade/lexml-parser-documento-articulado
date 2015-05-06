@@ -22,10 +22,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.io.input.BOMInputStream;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class LexMLParserFromTextTest {
@@ -35,6 +39,7 @@ public class LexMLParserFromTextTest {
 	private LexMLParser parserLei4320;
 	private LexMLParser parserEmenda852015;
 	private LexMLParserFromText parserLei9958;
+	private LexMLParserFromText parserEmenda852015docx;
 
 	@Before
 	public void setUp() {
@@ -43,6 +48,7 @@ public class LexMLParserFromTextTest {
 		parserPortaria = new LexMLParserFromText(sampleText("/input/CD-Boletim-Portaria 357-2014.utf-8.txt"));
 		parserLei4320 = new LexMLParserFromText(sampleText("/input/IN-DOU-Lei 4320-1964.utf-8.txt"));
 		parserEmenda852015 = new LexMLParserFromText(sampleText("/input/EMENDA-CONSTITUCIONAL-Nº 85-2015.utf-8.txt"));
+		parserEmenda852015docx = new LexMLParserFromText(sampleDocx("/input/EMENDA-CONSTITUCIONAL-Nº 85-2015.utf-8.docx"));
 		parserLei9958 = new LexMLParserFromText(sampleText("/input/IN-DOU-Lei 9958-2000.utf-8.txt"));
 	}
 
@@ -69,7 +75,7 @@ public class LexMLParserFromTextTest {
 		assertEquals(12, parserPortaria.getArtigos().size());
 		assertEquals(115, parserLei4320.getArtigos().size());
 		assertEquals(4, parserLei9958.getArtigos().size());
-		assertEquals(3, parserEmenda852015.getArtigos().size());
+		assertEquals(3, parserEmenda852015docx.getArtigos().size());
 	}
 
 	@Test
@@ -101,5 +107,19 @@ public class LexMLParserFromTextTest {
 
 	private String sampleText(String resourceName) {
 		return TestUtil.sampleText(resourceName);
+	}
+
+	private String sampleDocx(String resourceName) {
+		String content = null;
+		try {
+			InputStream input = new BOMInputStream(TestUtil.class.getResourceAsStream(resourceName));
+			XWPFDocument document = new XWPFDocument(OPCPackage.open(input));
+			@SuppressWarnings("resource")
+			XWPFWordExtractor wordExtractor = new XWPFWordExtractor(document);
+			content = wordExtractor.getText();
+		} catch (Exception exep) {
+			exep.printStackTrace();
+		}
+		return content;
 	}
 }
